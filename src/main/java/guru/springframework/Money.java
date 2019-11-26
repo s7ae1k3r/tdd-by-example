@@ -1,9 +1,30 @@
 package guru.springframework;
 
-public abstract class Money {
+public class Money implements Expression {
     int amount;
+    String currency;
 
-    public abstract Money times(int x);
+    public Money(int inAmount, String inCurrency) {
+        amount = inAmount;
+        currency = inCurrency;
+    }
+
+    public String currency() {
+        return currency;
+    }
+
+    public Expression times(int x){
+        return new Money( amount * x, currency);
+    }
+
+    public Expression plus(Expression addend){
+        return new Sum(this, addend);
+    }
+
+    @Override
+    public Money reduce(Bank bank, String to){
+        return new Money(amount / bank.rate(this.currency, to), to);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -13,6 +34,14 @@ public abstract class Money {
         Money m = (Money) o;
 
         return amount == m.amount &&
-                m.getClass().equals(getClass());
+                m.currency().equals(currency());
+    }
+
+    @Override
+    public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                '}';
     }
 }
