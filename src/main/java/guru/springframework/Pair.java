@@ -2,6 +2,9 @@ package guru.springframework;
 
 import java.util.Objects;
 
+/**
+ * Created by jt on 10/10/18.
+ */
 public class Pair {
 
     private final String from;
